@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            margin: 10px 0;
+            border-collapse: collapse;
+            width: 500px;
+        }
+
+        td {
+            border: 1px solid #333;
+            width: 100px;
+            height: 100px;
+            text-align: center;
+        }
+
+        p {
+            font: 1.4em Arial;
+            color: #FF0000
+        }
+    </style>
+</head>
+
+<body>
+    <p>10</p>
+    <table></table>
+
+    <script>
+        const tbl = document.querySelector('table')
+        const saniye = document.querySelector('p')
+        let kod = ''
+        let arr = []
+        let count = 1
+        let zaman = 10
+        let you = ' YOU '
+        let won = '  WON'
+        let game = ' GAME'
+        let over = ' OVER'
+        for (i = 1; i <= 16; i++) {
+            arr.push(i)
+        }
+
+        for (i = 1; i <= 4; i++) {
+            kod += '<tr>'
+            for (j = 1; j <= 4; j++) {
+                let x = rand(0, arr.length - 1)
+                kod += `<td onclick='bozart(this)'> ${arr[x]} </td>`
+                arr.splice(x, 1)
+            }
+            kod += '</tr>'
+        }
+
+        tbl.innerHTML = kod
+
+        function bozart(alma) {
+            if (alma.innerHTML == count) {
+                clearInterval(inter)
+                zaman = 10
+                saniye.innerHTML = zaman
+                inter = setInterval(zamanlama, 1000)
+                alma.style.background = 'gray'
+                count++
+            }
+            if (count == 17) {
+                clearInterval(inter);
+                saniye.innerHTML = ''
+                kod = ''
+                for (i = 1; i <= 4; i++) {
+                    kod += '<tr>'
+                    for (j = 1; j <= 4; j++) {
+                        text = i == 2 ? you[j] : i == 3 ? won[j] : ''   
+                        kod += `<td bgcolor='red' style="color: white"> ${text}</td>`
+                    }
+                    kod += '</tr>'
+                }
+                tbl.innerHTML = kod
+            }
+        }
+
+        let inter = setInterval(zamanlama, 1000)
+
+        function zamanlama() {
+            if (zaman > 0) { zaman--; saniye.innerHTML = zaman }
+            else {
+                clearInterval(inter)
+                saniye.innerHTML = ''
+                kod = ''
+                for (i = 1; i <= 4; i++) {
+                    kod += '<tr>'
+                    for (j = 1; j <= 4; j++) {
+                        text = i == 2 ? game[j] : i == 3 ? over[j] : ''                        
+                        kod += `<td bgcolor="black" style="color: yellow"> ${text} </td>`
+                    }
+                    kod += '</tr>'
+                }
+                tbl.innerHTML = kod
+            }
+        }
+
+        function rand(min, max) {
+            let z = Math.floor((max - min + 1) * Math.random()) + min;
+            return z
+        }
+
+    </script>
+</body>
+
+</html>
